@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Your Name - Projects</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Projects</h1>
-        <nav>
-            <a href="index.html">Home</a> |
-            <a href="projects.html">Projects</a> |
-            <a href="faq.html">FAQ</a> |
-            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-        </nav>
-    </header>
 
-    <section>
-        <h2>Academic Projects</h2>
-        <ul>
-            <li><strong>Project Name:</strong> Brief description. <a href="#">[Link]</a></li>
-            <li><strong>Another Project:</strong> Brief description. <a href="#">[Link]</a></li>
-        </ul>
+  <header>
+    <h1>Projects</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="projects.html">Projects</a> |
+      <a href="faq.html">FAQ</a> |
+      <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+    </nav>
+  </header>
 
-        <h2>Personal Projects</h2>
-        <ul>
-            <li><strong>Personal Project:</strong> Brief description. <a href="#">[Link]</a></li>
-            <li><strong>Another Personal Project:</strong> Brief description. <a href="#">[Link]</a></li>
-        </ul>
-    </section>
+  <div class="container">
+    <div class="sidebar">
+      <div class="project-list-toggle" onclick="toggleList()">▶ Project List</div>
+      <ul id="project-list" class="hidden">
+        <li><a href="projects/power-world.html">Power World</a></li>
+        <li><a href="projects/automatic-fan.html">Automatic Fan</a></li>
+      </ul>
+    </div>
 
-    <footer>
-        <p>© 2024 Your Name</p>
-    </footer>
+    <div class="content">
+      <div class="project-overview">
+        <h3><a href="projects/power-world.html">Power World</a></h3>
+        <p>Power World is a simulation tool for analyzing and visualizing electrical power systems. This project involved using it to model and evaluate grid behavior under different loads.</p>
+      </div>
+      <div class="project-overview">
+        <h3><a href="projects/automatic-fan.html">Automatic Fan</a></h3>
+        <p>A smart fan that detects heat signatures using thermal sensors and turns towards the source to cool it down. Designed for energy efficiency and quiet operation.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleList() {
+      const list = document.getElementById("project-list");
+      const toggle = document.querySelector(".project-list-toggle");
+      list.classList.toggle("hidden");
+      toggle.innerText = list.classList.contains("hidden") ? "▶ Project List" : "▼ Project List";
+    }
+  </script>
+
+  <footer>
+    <p>© 2025 Ali Ahmed</p>
+  </footer>
+
 </body>
 </html>
