@@ -12,7 +12,7 @@
     <nav>
       <a href="../index.html">Home</a> |
       <a href="../project.html">Projects</a> |
-      <a href="../about.html">about</a> |
+      <a href="../about.html">About Me</a> |
       <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
     </nav>
   </header>
@@ -23,8 +23,7 @@
         This project utilizes the Power World simulation software to find several unknown parameters of
         a power system schematic. The procedures section outlines the setup for the generators,
         transmission lines, transformers, and loads. By running the simulation using the N-R algorithm,
-        these unknown parameters are determined. The results section investigates from
-        the schematic and examines the effects of using a shunt capacitor and adding an additional
+        these unknown parameters are determined. The results section investigates the results and the effects of using a shunt capacitor and adding an additional
         transmission line. Both methods are effective ways to increase the voltage at bus 5, but adding
         another transmission line is the best option as it results in minimal power loss. Overall, Power
         World and other power flow simulation software provide a quick and effective way of finding
@@ -35,8 +34,10 @@
   <section>
     <h2>Procedures</h2>
     <p>
-      This schematic was created using the Power World Simulation software and can be seen
-      in figure 1 of the report.
+      <div class="image-gallery">
+      <img src="../images/Figure 1.PNG" alt="Schematic for the design" width="500">
+    </div>
+<br>
       First, 5 buses were created. Bus 1 is the slack bus with a voltage base of 18kV. The
       voltage per unit for bus 1 is 1p.u, at 0 degrees. Bus 2, 3, and 5 all have no specified voltage per
       unit value or angle. They all have a voltage base of 375kV and are load buses (PQ bus). They
@@ -47,21 +48,27 @@
       There are two generators, one at bus 1 and the other at bus 4. The generator at bus 1 will
       produce power depending on the load. The real power produced at bus 4 is known—it is 480MW.
       The reactive power is determined by the system's load demands. The maximum power that the
-      generator at bus 4 can produce is 1000MW, with no minimum real power requirement. The
-      generator’s reactive power range spans from -280MVars to +420MVars.
+      generator at bus 4 can produce is 1000MW, with no minimum real power requirement.
     </p>
+
+
     <p>
       Several transmission lines were also created, each with its own resistance, reactance, and
-      susceptance values, plus a maximum capacity of 1200MVA. Line lengths were considered:
+      susceptance values, plus a maximum capacity of 1200MVA. Line lengths were considered as well:
       the line between bus 2 and bus 3 is 80 miles, between bus 2 and bus 5 is 120 miles, and between
       bus 3 and bus 5 is 180 miles long.
     </p>
+
+
+
     <p>
-      Two transformers connect the lower-voltage and higher-voltage sections: one between buses
-      1 and 2, and another between buses 3 and 4. Each transformer has power limits, specific
+      Two transformers connect the lower-voltage and higher-voltage sections: transformer 1 between buses
+      1 and 2, and transformer 2 is between buses 3 and 4. Each transformer has power limits, specific
       resistances, reactances, and a defined connection configuration. Transformer 1 is a
       delta–wye grounded transformer, while Transformer 2 is wye grounded–delta.
     </p>
+
+
     <p>
       Finally, two loads were configured in the simulation. One load at bus 5 draws 840MW and
       250MVars, while the second load at bus 4 requires 100MW and 132MVars. After creating this
@@ -75,7 +82,7 @@
     <h2>Results</h2>
     <p>
       There were undefined parameters for each of the buses. For Bus 1, the amount of power
-      the generator had to produce was unknown. For buses 2, 3, and 5, the voltage and angle
+      the generator had to produce was unknown. For buses 2, 3, and 5, the voltage and phase angle
       were unknown. For Bus 4, the angle and the amount of reactive power the generator would
       need to produce were unknown.
     </p>
@@ -85,43 +92,73 @@
       list of the voltages, angles, and generated power at each bus can be found in Table 1. Table 2
       shows the power delivered through the lines and transformers, along with their capacity.
     </p>
-    <p><strong>Table 1:</strong> Table showing the voltages, angle, and power generated for each bus</p>
-    <p><strong>Table 2:</strong> Table displaying the amount of power through several lines and transformers</p>
-  
+
     <p>
+
+      <div class="image-caption">
+        <img src="../images/Table1.PNG" alt=" Table showing the voltages, angle and power generated for each bus " width="500">
+        <p class="caption"> <strong>Table 1:</strong> Table showing the voltages, angle, and power generated for each bus </p>
+      </div>
+    </p>
+
+
+
+    <p>
+      <div class="image-caption">
+      <img src="../images/Table2.PNG" alt="Shows the amount of power used in several lines and transformer" width="500">
+      <p class="caption"> <strong>Table 2:</strong> Table displaying the amount of power through several lines and transformers </p>
+      </div>
+    </p>
+    
+
+
+    <p>
+      <div class="image-gallery">
+      <img src="../images/Figure2.PNG" alt="Schematic with shunt capacitor" width="500"> 
+      </div>
+
+      <br>
       The voltage at Bus 5 was off by 0.05 pu. Using a shunt capacitor eliminated this difference.
-      Figure 2 shows the power flow when a shunt capacitor is added at bus 5. The amount of
+      The schematic above shows the power flow when a shunt capacitor is added at bus 5. The amount of
       power that the shunt capacitor needed to produce to bring the bus voltage to 0.95 pu was
-      137.8 Mvar. Another approach to boost the voltage at bus 5 was to add a second line
-      connecting bus 2 and bus 5; its impact is shown in Figure 3.
+      137.8 Mvar. 
+
+
+      <div class="image-gallery">
+      <img src="../images/Figure3.PNG" alt="Schematic with an additional transmission line" width="500">
+    </div>
     </p>
   
-    <p><strong>Figure 2:</strong> The circuit with a shunt capacitor added to bus 5</p>
-    <p><strong>Figure 3:</strong> The circuit with an additional transmission line added between bus 2 and bus 5</p>
-  
+      
     <p>
+      Another approach to boost the voltage at bus 5 was to add a second line
+      connecting bus 2 and bus 5 as shown above. 
       Adding a capacitor to Bus 5 can lead to unintended consequences. One issue is an increase
       in power flow through certain lines, pushing them closer to their capacity limits. On the other
       hand, overall reactive power losses dropped. For instance, before the capacitor installation,
       the reactive power loss between Bus 3 and 5 was 27.24 Mvar, which fell to 2.67 Mvar after
       installation. These changes are summarized in Table 3.
     </p>
-  
-    <p><strong>Table 3:</strong> The effects the capacitor had on the transformers and lines</p>
-  
+
+    <div class="image-caption">
+      <img src="../images/Table3.PNG" alt="capacitor table" width="500">
+      <p class="caption"><strong>Table 3:</strong> The effects the capacitor had on the transformers and lines</p>
+    </div>
+
+
+
     <p>
       Meanwhile, adding a second transmission line from Bus 2 to Bus 5 offered an overall
       positive impact on the circuit, freeing up capacity across lines and transformers while also
       reducing power losses. This is summarized in Table 4.
     </p>
-  
-    <p><strong>Table 4:</strong> The effects of adding another transmission line on the transformers and lines</p>
-  
-    <p>
-      Ultimately, the best solution for increasing the voltage at Bus 5 is to add another transmission
-      line between Bus 2 and Bus 5. This approach lowers power losses and reduces the loading on
-      existing transformers and lines.
-    </p>
+
+
+    <div class="image-caption">
+      <img src="../images/Table4.PNG" alt="additional transmission line table" width="500">
+      <p class="caption"><strong>Table 4:</strong> The effects of adding another transmission line on the transformers and lines</p>
+    </div>
+
   </section>
   
 
@@ -129,7 +166,7 @@
     <h2>Summary</h2>
     <p>
       In conclusion, the PowerWorld software is an effective tool for simulating power
-      systems. In figure 1, two loads required powering by generators located at the slack bus
+      systems. Two loads required powering by generators located at the slack bus
       and Bus 4. After running the simulation, the voltage at Bus 5 fell below the acceptable
       level of 0.95 p.u. Two approaches were considered to address this issue: adding a shunt
       capacitor or installing an additional transmission line.
@@ -149,15 +186,3 @@
 </body>
 </html>
 
-
-
-
-
-
-
-  <footer>
-    <p>© 2024 Your Name</p>
-  </footer>
-
-</body>
-</html>
