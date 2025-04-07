@@ -85,3 +85,12 @@ body {
   a:hover {
     text-decoration: underline;
   }
+
+  .center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full vertical height */
+  text-align: center;
+}
