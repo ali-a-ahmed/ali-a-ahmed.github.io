@@ -130,3 +130,58 @@ body {
   color: #555;
   margin-top: 8px;
 }
+/* fan.css */
+
+/* Center single images and limit their width */
+.centered-img-container {
+  text-align: center;      /* center the figcaption if needed */
+  margin: 20px auto;       /* spacing from other elements */
+  max-width: 500px;        /* optional limit on figure container width */
+}
+
+/* The actual image inside the figure */
+.centered-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+/* Style the captions */
+figure figcaption {
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 8px;
+  color: #555;
+}
+
+/* Side-by-side images container */
+.side-by-side-images {
+  display: flex;
+  justify-content: center;   /* center the entire group */
+  gap: 20px;                 /* spacing between figures */
+  margin: 20px 0;
+}
+
+/* Each figure within the side-by-side container */
+.side-by-side-images figure {
+  text-align: center;        /* center text inside each figure */
+  max-width: 300px;          /* limit width for each image/caption set */
+}
+
+/* Side-by-side images themselves */
+.side-by-side-images img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+/* Optional: additional tweaks for paragraphs, etc. */
+p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+

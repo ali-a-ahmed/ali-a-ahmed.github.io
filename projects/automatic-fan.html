@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Automatic Fan</title>
+  <!-- Original site-wide stylesheet -->
   <link rel="stylesheet" href="../style.css" />
+  <!-- New stylesheet for custom styling (e.g., images) -->
+  <link rel="stylesheet" href="../fan.css" />
 </head>
 <body>
 
@@ -16,7 +19,8 @@
       <a href="../index.html">Home</a> |
       <a href="../project.html">Projects</a> |
       <a href="../about.html">About Me</a> |
-      <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/ali-ahmed-846b69343" target="_blank"> LinkedIn</a>
+      
     </nav>
     <!-- In-Page Links / "Bar on the top" -->
     <nav class="top-bar">
@@ -24,7 +28,6 @@
       <a href="#design-and-components">Design &amp; Components</a>
       <a href="#build">Build</a>
       <a href="#testing">Testing &amp; Results</a>
-      <a href="#manual">User Manual</a>
     </nav>
   </header>
 
@@ -47,18 +50,26 @@
         <h2>Overview</h2>
         <p>
           The Automatic Fan project addresses the inefficiency
-          of traditional fans that blow air indiscriminately. By detecting hotspots with a thermal camera and rotating
-          automatically to aim cool air exactly where it’s needed, the system reduces wasted energy and offers targeted comfort.
+          of traditional fans that blow air indiscriminately. By detecting hotspots with a thermal camera 
+          and rotating automatically to aim cool air exactly where it’s needed, the system reduces wasted 
+          energy and offers targeted comfort.
         </p>
 
-        <img src="../images/Fan Picture Complete.PNG" alt="additional transmission line table" width="500">
-
+        <!-- Centered single image with caption -->
+        <figure class="centered-img-container">
+          <img 
+            src="../images/Fan Picture Complete.PNG" 
+            alt="Fan Project" 
+            class="centered-img"
+          >
+          <figcaption>The final assembled fan, showing motorized mount and camera.</figcaption>
+        </figure>
 
         <p>
-            I worked on this project with a team of other engineering students. I was responsible for the brainstormming,
-            the material procurements, modding the pan-tilt system and programming the different elements together. 
-            The project took a year to complete and the budget was $500.00 USD.
-            At the end, we were able to sucessfully demostrate that the fan was able to meet the requirements
+          I worked on this project with a team of other engineering students. I was responsible for the 
+          brainstorming, the material procurements, modding the pan-tilt system, and programming the 
+          different elements together. The project took a year to complete, and the budget was $500.00 USD.
+          At the end, we successfully demonstrated that the fan was able to meet the requirements.
         </p>
       </section>
 
@@ -67,12 +78,12 @@
         <h2>Design &amp; Components</h2>
         <p>
           This solution was built around four main components: the fan, a motorized
-          pan-tilt system, the MLX90640 thermal camera, and a Raspberry Pi. The fan
-          used is the Hybrid Whispher. We used it because it is lightweight and powered by an 18V battery for portability. The Bescor MP-101
-          motorized tripod head provides the pan/tilt control. The MLX90640 IR camera detects
-          heat gradients in a 32×24 pixel array and is compatiable with a Raspberry PI 4. 
-          Finally, the Raspberry Pi 4 processes data
-          and controls the motorized mount, ensuring the fan points at the hottest region in view.
+          pan-tilt system, the MLX90640 thermal camera, and a Raspberry Pi. The fan used is 
+          the Hybrid Whisper. We chose it for being lightweight and powered by an 18V battery for 
+          portability. The Bescor MP-101 motorized tripod head provides the pan/tilt control. The MLX90640 
+          IR camera detects heat gradients in a 32×24 pixel array and is compatible with a Raspberry Pi 4.
+          Finally, the Raspberry Pi 4 processes data and controls the motorized mount, ensuring the fan 
+          points at the hottest region in view.
         </p>
         <ul>
           <li><strong>Fan Assembly:</strong> Battery-powered, modified for lightweight operation.</li>
@@ -95,47 +106,79 @@
         <h3>Subsystem Assembly</h3>
         <p>
           <strong>Fan Assembly:</strong><br>
-          
-          <img src="../images/Fan.PNG" alt="ONE+ 18V Cordless Hybrid WHISPER SERIES " width="500">
-
-          We began with an 18V portable fan chosen for its
-          cordless design. Several non-essential parts (like the base and certain covers) were removed
-          to reduce weight. This reduced the overall load on the pan-tilt system.
+          <figure class="centered-img-container">
+            <img 
+              src="../images/Fan.PNG" 
+              alt="ONE+ 18V Cordless Hybrid WHISPER SERIES Fan" 
+              class="centered-img"
+            >
+            <figcaption>The 18V cordless fan, modified to reduce weight and remove unneeded parts.</figcaption>
+          </figure>
+          We began with an 18V portable fan chosen for its cordless design. Several non-essential parts 
+          (like the base and certain covers) were removed to reduce weight. This reduced the overall 
+          load on the pan-tilt system.
         </p>
+
         <p>
           <strong>Pan-Tilt System Setup:</strong><br>
-
-          <img src="../images/Tripod Cord Pic.PNG" alt="Tripod Cord Pic" width="500">
-          <img src="../images/Tripod Head.PNG" alt="Tripod Head" width="500">
-
+          <!-- A container for side-by-side images with captions -->
+          <div class="side-by-side-images">
+            <figure>
+              <img 
+                src="../images/Tripod Cord Pic.PNG" 
+                alt="Tripod Cord Pic"
+              >
+              <figcaption>Wiring harness for pan/tilt.</figcaption>
+            </figure>
+            <figure>
+              <img 
+                src="../images/Tripod Head.PNG" 
+                alt="Tripod Head"
+              >
+              <figcaption>Bescor MP-101 tripod head.</figcaption>
+            </figure>
+          </div>
           A Bescor MP-101 motorized tripod head provides horizontal (pan) and vertical (tilt)
-          rotation. Normally controlled via a simple wired remote, it was modified so the Raspberry
-          Pi’s GPIO pins could drive the same signals. Each directional control wire (up, down, left,
-          right) is routed to a corresponding GPIO pin, and additional support for power/ground ensures
-          the head can still run off its own small battery pack or integrated power solution.
+          rotation. Normally controlled via a wired remote, it was modified so the Raspberry
+          Pi’s GPIO pins could drive the same signals.
         </p>
+
         <p>
           <strong>Thermal Camera Integration:</strong><br>
+          <figure class="centered-img-container">
+            <img 
+              src="../images/Thermal Camera attached.PNG" 
+              alt="Thermal Camera attached to the fan" 
+              class="centered-img"
+            >
+            <figcaption>The MLX90640 camera attached in a custom 3D-printed case.</figcaption>
+          </figure>
+          The MLX90640 IR camera is attached at the center of the fan. This camera connects 
+          to the Raspberry Pi via SCL and SDA pins. We used a refresh rate of ~2 Hz, balancing 
+          performance with the Pi’s resources. The camera captures a 32×24 temperature grid, and the 
+          Pi interprets that data to find the highest-temperature “blob” in view.
 
-          <img src="../images/Thermal Camera attached.PNG" alt="Thermal Camera attached to the fan" width="500">
-          The MLX90640 IR camera is attached at the center of the fan using a 3D case. This camera connects to
-          the Raspberry Pi via using SCL and SDA pins. We used a refresh rate of about 2 Hz,
-          balancing performance with the Pi’s available processing resources. The camera captures
-          a 32×24 temperature grid, which the Pi software interprets to pinpoint the location of
-          the highest-temperature “blob” in view.
-
-          <img src="../images/Thermal Camera Images.PNG" alt="Thermal Camera Images" width="500">
-
+          <figure class="centered-img-container">
+            <img 
+              src="../images/Thermal Camera Images.PNG" 
+              alt="Thermal Camera Images" 
+              class="centered-img"
+            >
+            <figcaption>Sample output from the IR camera showing different temperature zones.</figcaption>
+          </figure>
         </p>
         <p>
           <strong>Power Supply Setup:</strong><br>
-          <img src="../images/Power Supply.PNG" alt="Power Supply Setup" width="500">
-
+          <figure class="centered-img-container">
+            <img 
+              src="../images/Power Supply.PNG" 
+              alt="Power Supply Setup"
+              class="centered-img"
+            >
+            <figcaption>The battery, step-down module, and power wiring enclosed for safety.</figcaption>
+          </figure>
           We wanted everything powered from a single 18V battery, but the Pi requires 5V.
-          A step-down (buck) converter was introduced to regulate from 18V down to 5V/3A. The
-          fan itself runs directly off 18V, while the Pi harnesses the stepped-down supply. A 3D-printed
-          enclosure was created to protect the Pi, the step-down module, and associated wiring from
-          water splashes or accidental damage.
+          A step-down (buck) converter was introduced to regulate from 18V down to 5V/3A.
         </p>
 
         <h3>Software Implementation</h3>
@@ -144,25 +187,23 @@
         </p>
         <ol>
           <li>Continuously reads frames from the MLX90640 camera (each frame is a 32×24 matrix).</li>
-          <li>Identifies hotspots by thresholding pixels above a certain temperature (e.g. ~28°C).</li>
+          <li>Identifies hotspots by thresholding pixels above ~28°C.</li>
           <li>Groups hot pixels into “blobs” and selects the blob with the highest average temperature.</li>
           <li>Determines how far this blob’s centroid is from the center of the frame.</li>
-          <li>Sends signals to the Bescor MP-101 (via GPIO pins) to rotate left/right/up/down until the
-              blob is centered.</li>
-          <li>Maintains a target lock until a hotter spot appears, at which point it re-centers on the
-              new, higher-temperature blob.</li>
+          <li>Sends signals to the Bescor MP-101 (via GPIO pins) to rotate in the correct direction.</li>
+          <li>Maintains a target lock until a hotter spot appears, at which point it re-centers.</li>
         </ol>
         <p>
           We fine-tuned constants like dead zones, proportional gains, and blob-size thresholds
-          through trial and error. The code can be seen  <a href="../projects/code-for-automatic-fan.html">here</a>.
+          through trial and error. The code can be seen 
+          <a href="../projects/code-for-automatic-fan.html">here</a>.
         </p>
 
         <h3>Assembly Challenges &amp; Solutions</h3>
         <ul>
           <li>
             <strong>Mounting the Fan:</strong> Drilling was required to attach the fan securely to the tripod head.
-            We ensured the final combined weight (fan + bracket + Pi enclosure) stayed under the
-            pan-tilt’s maximum load limit (10 lbs).
+            We ensured the final combined weight stayed under the pan-tilt’s 10 lb limit.
           </li>
           <li>
             <strong>Wiring &amp; Power:</strong> The biggest challenge was consolidating everything into one battery
@@ -170,9 +211,7 @@
           </li>
           <li>
             <strong>Software Calibration:</strong> The IR camera’s resolution is only 32×24 pixels, so noise and small
-            changes can throw it off. Iterative testing let us refine the thresholds for minimum blob
-            size (so it ignores random hot spots like a coffee cup) and maximum blob size (so it
-            doesn’t misread large backgrounds).
+            changes can throw it off. Iterative testing let us refine thresholds for minimum/maximum blob size.
           </li>
         </ul>
 
@@ -203,10 +242,9 @@
           exciting and challenging. I also gained hands-on experience in programming and soldering,
           which helped me better understand how hardware and software come together in a real-world
           application. Finally, I discovered how to modify existing products so they work more
-          effectively for my specific goals. 
+          effectively for my specific goals.
         </p>
       </section>
-      
 
     </div>
     <!-- End Main Content -->
