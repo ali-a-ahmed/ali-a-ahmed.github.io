@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Automatic Fan - Full Python Code</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Automatic Fan: Full Python Code &amp; Implementation</h1>
+    <nav>
+      <!-- Simple nav to go back to the main Automatic Fan page or wherever else -->
+      <a href="automatic-fan.html">← Back to Automatic Fan</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- Main Content -->
+    <div class="content">
+
+      <!-- Intro Paragraph -->
+      <section>
+        <p>
+          The Raspberry Pi 4 is what controls the tripod based on the temperature inputs received from
+          the thermal camera. The code is written using Python and a script automatically runs the code when
+          the Raspberry Pi is turned on. The entirety of the code can be found in appendix B, however this
+          section highlights the important elements of the code.
+        </p>
+      </section>
+
+      <!-- Move Direction Explanation -->
+      <section>
+        <h2>Moving the Pan-Tilt Tripod Head</h2>
+        <pre>
+def move_direction(pin, duration):
+    try:
+        print(f"Moving pin {pin} for {duration:.2f} seconds")
+        GPIO.output(pin, GPIO.HIGH)
+        time.sleep(duration)
+        GPIO.output(pin, GPIO.LOW)
+        print(f"Movement complete")
+    except Exception as e:
+        print(f"Error during movement: {e}")
+        GPIO.output(pin, GPIO.LOW) # Ensure pin is low if error occurs
+
+def move_up(duration):
+    move_direction(UP_PIN, duration)
+
+def move_down(duration):
+    move_direction(DOWN_PIN, duration)
+
+def move_left(duration):
+    move_direction(LEFT_PIN, duration)
+
+def move_right(duration):
+    move_direction(RIGHT_PIN, duration)
+        </pre>
+        <p>
+          To move the pan-tilt head, each direction is assigned to a specific GPIO pin. Initially, all pins are
+          set to LOW, but when a pin is set to HIGH, it sends a signal to the tripod head, causing it to move
+          in the corresponding direction for a specified duration. Once the movement is complete, the pin is
+          turned off again. For these functions to work, both the GPIO pin and the duration must be specified.
+        </p>
+      </section>
+
+      <!-- Thermal Camera Parameters -->
+      <section>
+        <h2>Thermal Camera Parameters</h2>
+        <pre>
+@dataclass
+class ThermalPersonDetector:
+    def __init__(self):
+        # Initialize I2C
+        self.i2c = busio.I2C(board.SCL, board.SDA, frequency=800000)
+        self.mlx = adafruit_mlx90640.MLX90640(self.i2c)
+        self.mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_2_HZ
+
+        # Frame buffer
+        self.frame = [0] * 768
+
+        # Parameters for person detection
+        self.MIN_PERSON_TEMP = 28.0 # Minimum temperature for human detection  (Celsius)
+        self.MIN_BLOB_AREA = 15 # Minimum area for a blob to be considered a person
+        self.MAX_BLOB_AREA = 150 # Increased maximum area to capture larger hotspots
+
+        # Control parameters
+        self.CENTER_X = 16 # Center x-coordinate (32/2)
+        self.CENTER_Y = 12 # Center y-coordinate (24/2)
+        self.DEAD_ZONE = 1 # Reduced dead zone to make it more sensitive
+
+    def get_thermal_frame(self):
+        """Capture and process a frame from the thermal camera."""
+        try:
+            self.mlx.getFrame(self.frame)
+            temp_array = np.array(self.frame).reshape((24, 32))
+            return temp_array
+        except ValueError:
+            return None
+        </pre>
+        <p>
+          This section of the code initializes the thermal camera. It defines the center of the 32x24 pixel
+          array produced by the camera. The data captured by the thermal camera is then stored in an array
+          called <code>temp_array</code>.
+        </p>
+      </section>
+
+      <!-- Determining Control Parameters -->
+      <section>
+        <h2>Determining Control Parameters</h2>
+        <pre>
+def get_control_state(self, people):
+    """Calculate control state based on hottest person's position."""
+    if not people:
+        return None
+
+    # Find the person with the highest temperature
+    hottest_person = max(people, key=lambda x: x['temperature'])
+
+    # Get position (y, x)
+    pos_y, pos_x = hottest_person['position']
+
+    # Calculate error (distance from center)
+    x_error = pos_x - self.CENTER_X
+    y_error = pos_y - self.CENTER_Y
+
+    # Check if each axis is centered (within dead zone)
+    x_centered = abs(x_error) <= self.DEAD_ZONE
+    y_centered = abs(y_error) <= self.DEAD_ZONE
+
+    return ControlState(
+        x_error=x_error,
+        y_error=y_error,
+        x_centered=x_centered,
+        y_centered=y_centered,
+        target_temp=hottest_person['temperature']
+    )
+        </pre>
+        <p>
+          This section of the code identifies the hottest person within the 32x24 pixel array frame. By
+          calculating the difference between the X and Y coordinates of the hottest point and the center of
+          the frame, it determines the direction needed for the tripod head to adjust. This information is then
+          returned to guide the tripod head's movement.
+        </p>
+      </section>
+
+      <!-- Moving the Pan-Tilt Head (ControlState) -->
+      <section>
+        <h2>Moving the Pan-Tilt Head</h2>
+        <pre>
+def move_pan_tilt(control_state):
+    """
+    Move the pan-tilt head based on control_state.
+    """
+
+    # Constants for movement
+    MAX_DURATION = 10 # Increased maximum movement duration in seconds
+    Kp = 0.3 # Increased proportional gain for more significant movements
+
+    # Prioritize X-axis (pan)
+    if not control_state.x_centered:
+        x_error = control_state.x_error
+        # Calculate movement duration
+        x_duration = min(abs(x_error) * Kp, MAX_DURATION)
+        if x_error > 0:
+            print(f"Moving RIGHT for {x_duration:.2f} seconds")
+            move_right(x_duration)
+        else:
+            print(f"Moving LEFT for {x_duration:.2f} seconds")
+            move_left(x_duration)
+    else:
+        print("X-axis centered.")
+
+    # After completing X-axis movement, adjust Y-axis (tilt)
+    if not control_state.y_centered:
+        y_error = control_state.y_error
+        # Calculate movement duration
+        y_duration = min(abs(y_error) * Kp, MAX_DURATION)
+        if y_error > 0:
+            print(f"Moving DOWN for {y_duration:.2f} seconds")
+            move_down(y_duration)
+        else:
+            print(f"Moving UP for {y_duration:.2f} seconds")
+            move_up(y_duration)
+    else:
+        print("Y-axis centered.")
+        </pre>
+        <p>
+          This section of the code handles sending the duration and pin data based on the control system
+          defined earlier. The proportional gain (<code>Kp</code>) is multiplied with the X and Y error to
+          determine how long the pan-tilt head should move. Through trial and error, a value of 0.3 proved
+          optimal. A maximum of 10 seconds is set because it never takes longer than that to reach the target.
+        </p>
+        <p>
+          Movement along the X-axis is prioritized over the Y-axis since the pan-tilt head cannot move in
+          both directions simultaneously. If both errors are nonzero, the system checks which axis to correct
+          first and then sends the appropriate duration and pin data to the movement functions.
+        </p>
+      </section>
+
+      <!-- Main -->
+      <section>
+        <h2>Main</h2>
+        <pre>
+def main():
+    detector = ThermalPersonDetector()
+    print("MLX addr detected on I2C")
+    print([hex(i) for i in detector.mlx.serial_number])
+
+    try:
+        while True:
+            stamp = time.monotonic()
+
+            # Get thermal frame
+            temp_array = detector.get_thermal_frame()
+            if temp_array is None:
+                continue
+
+            # Detect people (hotspots)
+            people = detector.detect_people(temp_array)
+
+            # Get control state
+            control_state = detector.get_control_state(people)
+
+            # Print control information
+            if control_state:
+                print("\nControl Status:")
+                print(f"X-axis: {'CENTERED' if control_state.x_centered else 'Move LEFT' if control_state.x_error < 0 else 'Move RIGHT'}")
+                print(f"Y-axis: {'CENTERED' if control_state.y_centered else 'Move UP' if control_state.y_error < 0 else 'Move DOWN'}")
+                print(f"Error: (X: {control_state.x_error:+.1f}, Y: {control_state.y_error:+.1f})")
+                if control_state.x_centered and control_state.y_centered:
+                    print("Target locked!")
+                else:
+                    # Move pan-tilt head to reduce x_error and y_error
+                    move_pan_tilt(control_state)
+            else:
+                print("No target detected.")
+
+            # Visualize results
+            visualization = detector.visualize_frame(temp_array, people, control_state)
+            cv2.imshow('MLX90640 Thermal Camera', visualization)
+
+            print(f"Frame processed in {time.monotonic() - stamp:.2f} s")
+
+            # Press 'q' to quit
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user")
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+    finally:
+        cv2.destroyAllWindows()
+        GPIO.cleanup()
+        print("\nGPIO cleanup completed")
+
+if __name__ == "__main__":
+    main()
+        </pre>
+        <p>
+          The <code>main()</code> function repeatedly retrieves frames from the thermal camera and detects
+          hotspots. If a significant hotspot is found, it calculates the X/Y error and moves the pan-tilt head
+          accordingly. The loop continues until you press <strong>Q</strong> on a keyboard attached to the Pi or
+          until power is switched off.
+        </p>
+      </section>
+
+      <!-- Additional Code for Imports and GPIO Setup -->
+      <section>
+        <h2>Imports &amp; GPIO Setup</h2>
+        <pre>
+import time
+import board
+import busio
+import adafruit_mlx90640
+import numpy as np
+import cv2
+from scipy import ndimage
+from dataclasses import dataclass
+
+# Import GPIO for pan-tilt control
+import RPi.GPIO as GPIO
+
+# GPIO Pin assignments for controlling Bescor MP-101 movements
+UP_PIN = 23 #Purple
+DOWN_PIN = 27 #Orange
+LEFT_PIN = 22  # White
+RIGHT_PIN = 24 # Green/Clear
+
+# Setup GPIO in BCM mode
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)  # Disable warnings
+
+# Set all pins as output pins with initial LOW state
+GPIO.setup(UP_PIN, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(DOWN_PIN, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(LEFT_PIN, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(RIGHT_PIN, GPIO.OUT, initial=GPIO.LOW)
+        </pre>
+        <p>
+          These imports and GPIO initializations are essential for the entire script. Here we load
+          necessary libraries (<code>time</code>, <code>board</code>, <code>busio</code>, etc.) and define pin
+          assignments for the Bescor MP-101’s movement control. Warnings are disabled to keep the output
+          clean, and each pin is set to <strong>LOW</strong> by default for safety.
+        </p>
+      </section>
+
+    </div>
+    <!-- End Main Content -->
+
+  </div>
+
+  <footer>
+    <p>© 2025 Ali</p>
+  </footer>
+
+</body>
+</html>

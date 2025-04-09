@@ -14,7 +14,7 @@
     <nav>
       <!-- Main Site Links -->
       <a href="../index.html">Home</a> |
-      <a href="../projects.html">Projects</a> |
+      <a href="../project.html">Projects</a> |
       <a href="../about.html">About Me</a> |
       <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
     </nav>
@@ -46,9 +46,19 @@
       <section id="overview">
         <h2>Overview</h2>
         <p>
-          The Automatic Fan project (sometimes referred to as the “Hotspot Tracking Fan”) addresses the inefficiency
+          The Automatic Fan project addresses the inefficiency
           of traditional fans that blow air indiscriminately. By detecting hotspots with a thermal camera and rotating
           automatically to aim cool air exactly where it’s needed, the system reduces wasted energy and offers targeted comfort.
+        </p>
+
+        <img src="../images/Fan Picture Complete.PNG" alt="additional transmission line table" width="500">
+
+
+        <p>
+            I worked on this project with a team of other engineering students. I was responsible for the brainstormming,
+            the material procurements, modding the pan-tilt system and programming the different elements together. 
+            The project took a year to complete and the budget was $500.00 USD.
+            At the end, we were able to sucessfully demostrate that the fan was able to meet the requirements
         </p>
       </section>
 
@@ -56,11 +66,12 @@
       <section id="design-and-components">
         <h2>Design &amp; Components</h2>
         <p>
-          This solution was built around four main components: the fan assembly, a motorized
-          pan-tilt system, the MLX90640 thermal camera, and a Raspberry Pi. The fan assembly
-          is lightweight and powered by an 18V battery for portability. The Bescor MP-101
+          This solution was built around four main components: the fan, a motorized
+          pan-tilt system, the MLX90640 thermal camera, and a Raspberry Pi. The fan
+          used is the Hybrid Whispher. We used it because it is lightweight and powered by an 18V battery for portability. The Bescor MP-101
           motorized tripod head provides the pan/tilt control. The MLX90640 IR camera detects
-          heat gradients in a 32×24 pixel array. Finally, the Raspberry Pi processes sensor data
+          heat gradients in a 32×24 pixel array and is compatiable with a Raspberry PI 4. 
+          Finally, the Raspberry Pi 4 processes data
           and controls the motorized mount, ensuring the fan points at the hottest region in view.
         </p>
         <ul>
@@ -84,13 +95,19 @@
         <h3>Subsystem Assembly</h3>
         <p>
           <strong>Fan Assembly:</strong><br>
-          We began with an 18V portable fan—originally a Ryobi or similar brand—chosen for its
+          
+          <img src="../images/Fan.PNG" alt="ONE+ 18V Cordless Hybrid WHISPER SERIES " width="500">
+
+          We began with an 18V portable fan chosen for its
           cordless design. Several non-essential parts (like the base and certain covers) were removed
-          to reduce weight. This reduced the overall load on the pan-tilt system, ensuring smooth
-          and reliable rotation.
+          to reduce weight. This reduced the overall load on the pan-tilt system.
         </p>
         <p>
           <strong>Pan-Tilt System Setup:</strong><br>
+
+          <img src="../images/Tripod Cord Pic.PNG" alt="Tripod Cord Pic" width="500">
+          <img src="../images/Tripod Head.PNG" alt="Tripod Head" width="500">
+
           A Bescor MP-101 motorized tripod head provides horizontal (pan) and vertical (tilt)
           rotation. Normally controlled via a simple wired remote, it was modified so the Raspberry
           Pi’s GPIO pins could drive the same signals. Each directional control wire (up, down, left,
@@ -99,16 +116,23 @@
         </p>
         <p>
           <strong>Thermal Camera Integration:</strong><br>
-          The MLX90640 IR camera is mounted at the fan’s center axis. This camera connects to
-          the Pi via the I2C bus (using SCL and SDA pins). We used a refresh rate of about 2 Hz,
+
+          <img src="../images/Thermal Camera attached.PNG" alt="Thermal Camera attached to the fan" width="500">
+          The MLX90640 IR camera is attached at the center of the fan using a 3D case. This camera connects to
+          the Raspberry Pi via using SCL and SDA pins. We used a refresh rate of about 2 Hz,
           balancing performance with the Pi’s available processing resources. The camera captures
           a 32×24 temperature grid, which the Pi software interprets to pinpoint the location of
           the highest-temperature “blob” in view.
+
+          <img src="../images/Thermal Camera Images.PNG" alt="Thermal Camera Images" width="500">
+
         </p>
         <p>
           <strong>Power Supply Setup:</strong><br>
-          We wanted everything powered from a single 18V battery, but the Pi requires 5V. Consequently,
-          a step-down (buck) converter was introduced to regulate from 18V down to 5V/3A. The
+          <img src="../images/Power Supply.PNG" alt="Power Supply Setup" width="500">
+
+          We wanted everything powered from a single 18V battery, but the Pi requires 5V.
+          A step-down (buck) converter was introduced to regulate from 18V down to 5V/3A. The
           fan itself runs directly off 18V, while the Pi harnesses the stepped-down supply. A 3D-printed
           enclosure was created to protect the Pi, the step-down module, and associated wiring from
           water splashes or accidental damage.
@@ -130,9 +154,7 @@
         </ol>
         <p>
           We fine-tuned constants like dead zones, proportional gains, and blob-size thresholds
-          through trial and error. For instance, if the movement was too jittery, we lowered the
-          proportional gain. If it failed to detect a person standing at a distance, we adjusted the
-          minimum blob area threshold.
+          through trial and error. The code can be seen  <a href="../projects/code-for-automatic-fan.html">here</a>.
         </p>
 
         <h3>Assembly Challenges &amp; Solutions</h3>
@@ -140,7 +162,7 @@
           <li>
             <strong>Mounting the Fan:</strong> Drilling was required to attach the fan securely to the tripod head.
             We ensured the final combined weight (fan + bracket + Pi enclosure) stayed under the
-            pan-tilt’s maximum load limit.
+            pan-tilt’s maximum load limit (10 lbs).
           </li>
           <li>
             <strong>Wiring &amp; Power:</strong> The biggest challenge was consolidating everything into one battery
@@ -173,37 +195,18 @@
         </p>
       </section>
 
-      <!-- User Manual / Basic Instructions -->
-      <section id="manual">
-        <h2>User Manual</h2>
-        <h3>Powering On &amp; Setup</h3>
-        <ol>
-          <li><strong>Insert Battery:</strong> Attach the charged 18V battery to the fan’s power connector.</li>
-          <li><strong>Flip the Switch:</strong> Turn on the fan’s main power knob. The Pi boots up automatically.</li>
-          <li><strong>Wait for Initialization:</strong> The camera will start capturing thermal data within a few seconds.</li>
-        </ol>
-
-        <h3>Operating Modes</h3>
-        <ul>
-          <li><em>Automatic Mode:</em> The Raspberry Pi and IR camera run continuously, searching for new hotspots
-          and aiming the fan in their direction.</li>
-          <li><em>Manual Mode:</em> Swap out the Pi-control cable for the original remote cable to steer the fan
-          wherever you please.</li>
-        </ul>
-
-        <h3>Maintenance &amp; Safety</h3>
-        <ul>
-          <li>Clean the camera lens gently with a microfiber cloth to avoid dust build-up.</li>
-          <li>Keep water away from the fan’s front or main motor, even though the electronics box
-              is somewhat splash-resistant.</li>
-          <li>When not in use, turn off the fan to conserve battery power.</li>
-        </ul>
-
+      <section>
+        <h2>Reflection</h2>
         <p>
-          With minimal upkeep, the Automatic Fan should provide consistent, energy-efficient cooling
-          for any environment that needs directed airflow.
+          I learned many things from doing this project. The first key lesson was taking an idea
+          from simple brainstorming all the way to a fully realized concept—a process that was both
+          exciting and challenging. I also gained hands-on experience in programming and soldering,
+          which helped me better understand how hardware and software come together in a real-world
+          application. Finally, I discovered how to modify existing products so they work more
+          effectively for my specific goals. 
         </p>
       </section>
+      
 
     </div>
     <!-- End Main Content -->
